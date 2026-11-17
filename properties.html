@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rentals | Aashray Properties, Ahmedabad</title>
+<meta name="description" content="Search rental flats, RKs, bungalows and commercial spaces in Maninagar, Vatva, Isanpur, Ghodasar and Narol, Ahmedabad.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="properties">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="house" viewBox="0 0 1080 1080">
+    <rect width="1080" height="1080" rx="180" fill="#17202b"/>
+    <path d="M540 250 L790 470 L790 770 L290 770 L290 470 Z" fill="none" stroke="#e8c27a" stroke-width="58" stroke-linejoin="round"/>
+    <rect x="490" y="600" width="100" height="170" fill="#e8c27a"/>
+    <circle cx="540" cy="190" r="32" fill="#e8c27a"/>
+  </symbol>
+</svg>
+
+<header class="site">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="index.html" aria-label="Aashray Properties, home">
+        <svg viewBox="0 0 1080 1080" aria-hidden="true"><use href="#house"/></svg>
+        <span class="word"><b>AASHRAY</b><small>Properties</small></span>
+      </a>
+      <div class="topright">
+        <a class="btn-ghost" href="index.html">Home</a>
+      </div>
+    </div>
+    <nav class="links" aria-label="Page sections">
+      <ul>
+        <li><a href="index.html#featured">Featured</a></li>
+        <li><a href="index.html#visit">Book a visit</a></li>
+        <li><a href="index.html#reviews">Reviews</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="properties.html" aria-current="page">All rentals</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <p class="kicker">Rentals in Ahmedabad</p>
+    <h1 style="margin-top:8px">Find your rental</h1>
+    <p>Pick a property type, BHK and area, then press Show rentals.</p>
+  </div>
+
+  <div style="margin-top:14px;">
+    <button class="btn-gold" id="searchToggle" type="button" aria-controls="searchPanel" aria-expanded="false">Search rentals</button>
+  </div>
+
+  <div id="searchPanel" hidden>
+    <div class="filter-card" role="search" aria-label="Search rentals">
+      <div class="filter-grid">
+        <div class="field">
+          <span class="lbl" id="typeLbl">Property type</span>
+          <div class="seg" role="group" aria-labelledby="typeLbl" id="typeSeg"></div>
+        </div>
+        <div class="field">
+          <label for="fBhk">BHK</label>
+          <select id="fBhk">
+            <option value="">Any</option>
+            <option value="RK">RK (studio)</option>
+            <option value="1">1 BHK</option>
+            <option value="2">2 BHK</option>
+            <option value="3">3 BHK</option>
+            <option value="4+">4+ BHK</option>
+            <option value="Bungalow">Bungalow</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="fArea">Area</label>
+          <select id="fArea">
+            <option value="">All areas</option>
+            <option>Maninagar</option><option>Vatva</option><option>Isanpur</option><option>Ghodasar</option><option>Narol</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-foot">
+        <span class="hint" id="filterHint"></span>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <button class="linkbtn" id="clearBtn" type="button">Clear</button>
+          <button class="btn-navy" id="showBtn" type="button" style="flex:none; padding-left:20px; padding-right:20px;">Show rentals</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="resultsWrap" aria-live="polite">
+    <div class="results-head">
+      <p class="muted"><span id="count">0</span></p>
+      <select id="sort" aria-label="Sort rentals">
+        <option value="new">Newest first</option>
+        <option value="low">Rent: low to high</option>
+        <option value="high">Rent: high to low</option>
+        <option value="size">Largest first</option>
+      </select>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>
+      <p><strong>No rentals match this search.</strong></p>
+      <p style="margin-top:6px">Try another area or BHK, or <a data-wa href="#" target="_blank" rel="noopener">ask us on WhatsApp</a>. We'll look for you.</p>
+    </div>
+    <p class="hint" data-sample-notice hidden style="margin-top:14px">Showing sample listings until your listings sheet is connected.</p>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h3>AASHRAY PROPERTIES</h3>
+        <p>Rental flats, houses, bungalows and shops in Maninagar, Vatva, Isanpur, Ghodasar and Narol, Ahmedabad.</p>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <p><a data-wa href="#">WhatsApp</a></p>
+        <p data-phone style="margin-top:4px"></p>
+      </div>
+      <div>
+        <h3>Quick links</h3>
+        <p><a href="index.html">Home</a></p>
+        <p><a href="index.html#visit">Book a visit</a></p>
+        <p><a href="index.html#contact">Contact</a></p>
+      </div>
+    </div>
+    <p class="fine">Rents and availability change often. Confirm details with us before you visit or pay anything.</p>
+    <p class="fine">&copy; <span data-year></span> Aashray Properties</p>
+  </div>
+</footer>
+
+<dialog id="detail" aria-labelledby="dlgTitle">
+  <div id="dlgPhoto" class="photo" style="aspect-ratio:16/9;"></div>
+  <div class="dlg-body">
+    <div>
+      <h2 id="dlgTitle" style="font-size:21px;"></h2>
+      <p class="muted" id="dlgNote" style="margin-top:4px"></p>
+    </div>
+    <dl id="dlgFacts"></dl>
+    <div id="dlgMore" class="chips"></div>
+    <div class="dlg-actions">
+      <button class="btn-line" type="button" id="dlgClose">Close</button>
+      <a class="btn-fill" href="index.html#visit">Book a visit</a>
+      <a class="btn-fill" id="dlgWa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</dialog>
+
+<script src="site.js"></script>
+<script>
+  initProperties();
+</script>
+</body>
+</html>

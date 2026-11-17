@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aashray Properties, Ahmedabad</title>
+<meta name="description" content="Rental flats, houses, bungalows and shops in Maninagar, Vatva, Isanpur, Ghodasar and Narol, Ahmedabad. Browse, book a visit, or contact us.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="house" viewBox="0 0 1080 1080">
+    <rect width="1080" height="1080" rx="180" fill="#17202b"/>
+    <path d="M540 250 L790 470 L790 770 L290 770 L290 470 Z" fill="none" stroke="#e8c27a" stroke-width="58" stroke-linejoin="round"/>
+    <rect x="490" y="600" width="100" height="170" fill="#e8c27a"/>
+    <circle cx="540" cy="190" r="32" fill="#e8c27a"/>
+  </symbol>
+</svg>
+
+<header class="site">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="index.html" aria-label="Aashray Properties, home">
+        <svg viewBox="0 0 1080 1080" aria-hidden="true"><use href="#house"/></svg>
+        <span class="word"><b>AASHRAY</b><small>Properties</small></span>
+      </a>
+      <div class="topright">
+        <a class="btn-gold" href="properties.html">Properties</a>
+      </div>
+    </div>
+    <nav class="links" aria-label="Page sections">
+      <ul>
+        <li><a href="#featured">Featured</a></li>
+        <li><a href="#visit">Book a visit</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="properties.html">All rentals</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">Rentals · Maninagar · Vatva · Isanpur · Ghodasar · Narol</p>
+      <h1 style="margin-top:12px">Find a home or shop to rent in Ahmedabad</h1>
+      <p class="lead">Flats, RKs, bungalows and commercial spaces. Book a visit, or message us on WhatsApp.</p>
+      <div class="row">
+        <a class="btn-gold" href="properties.html">Browse all rentals</a>
+        <a class="btn-ghost" href="#visit">Book a visit</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="block" id="featured">
+      <div class="sec-head">
+        <div>
+          <p class="kicker">Featured</p>
+          <h2 style="margin-top:6px">Rentals this week</h2>
+          <p>A few of our latest rentals. <span id="featuredCount"></span> available in total.</p>
+        </div>
+        <a class="more" href="properties.html">See all rentals &rarr;</a>
+      </div>
+      <div class="grid four" id="featuredGrid"></div>
+      <p class="hint" data-sample-notice hidden style="margin-top:12px">Showing sample listings until your listings sheet is connected.</p>
+    </section>
+
+    <section class="block" id="visit">
+      <div class="sec-head">
+        <div>
+          <p class="kicker">Visit</p>
+          <h2 style="margin-top:6px">Book a visit</h2>
+          <p>Pick a date and time. We'll confirm the visit on WhatsApp.</p>
+        </div>
+      </div>
+      <div class="two">
+        <div class="panel">
+          <div id="apptEmbedSlot"></div>
+          <form id="apptForm" class="form-grid" novalidate>
+            <div class="field full">
+              <label for="aName">Your name</label>
+              <input id="aName" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="aPhone">WhatsApp number</label>
+              <input id="aPhone" inputmode="tel" autocomplete="tel" required>
+            </div>
+            <div class="field">
+              <label for="aDate">Preferred date</label>
+              <input id="aDate" type="date" required>
+            </div>
+            <div class="field">
+              <label for="aTime">Preferred time</label>
+              <select id="aTime">
+                <option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+                <option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option>
+                <option>5:00 PM</option><option>6:00 PM</option><option>7:00 PM</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="aProp">Property (optional)</label>
+              <input id="aProp" placeholder="e.g. Vatva 2 BHK">
+            </div>
+            <div class="field full">
+              <button class="btn-fill wide" type="submit">Request this visit on WhatsApp</button>
+              <p class="form-note" id="apptNote" role="status"></p>
+            </div>
+          </form>
+        </div>
+        <div class="panel">
+          <h3>How visits work</h3>
+          <p class="muted">Send your request, and we'll confirm the time and property on WhatsApp.</p>
+          <p class="muted">Visits are arranged with the owner or caretaker, so the time may shift by up to an hour.</p>
+          <p class="hint">Bring a valid ID on the day of the visit. Your details are only used to arrange your visit.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="reviews">
+      <div class="sec-head">
+        <div>
+          <p class="kicker">Reviews</p>
+          <h2 style="margin-top:6px">Reviews and feedback</h2>
+          <p>Read what clients say, or tell us how we did.</p>
+        </div>
+      </div>
+      <div class="two">
+        <div class="panel">
+          <h3>What clients say</h3>
+          <div id="reviewList"></div>
+          <a class="btn-fill wide" id="reviewBtn" href="#" target="_blank" rel="noopener">Read and write reviews on Google</a>
+        </div>
+        <div class="panel">
+          <h3>Send feedback</h3>
+          <div id="feedbackSlot"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="contact">
+      <div class="sec-head">
+        <div>
+          <p class="kicker">Connect</p>
+          <h2 style="margin-top:6px">Contact us</h2>
+          <p>Choose the way you like to reach us.</p>
+        </div>
+      </div>
+      <div class="contact-grid" id="contactCards"></div>
+
+      <div class="panel" id="enquiry" style="margin-top:16px;">
+        <h3>Send an enquiry</h3>
+        <p class="muted">Tell us what you're looking for. We'll reply on WhatsApp.</p>
+        <form id="enqForm" class="form-grid" novalidate>
+          <div class="field">
+            <label for="eName">Name</label>
+            <input id="eName" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="ePhone">WhatsApp number</label>
+            <input id="ePhone" inputmode="tel" autocomplete="tel" required>
+          </div>
+          <div class="field">
+            <label for="eNeed">Looking for</label>
+            <select id="eNeed">
+              <option>Commercial shop or office</option>
+              <option>RK / studio</option>
+              <option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>4+ BHK</option>
+              <option>Bungalow</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="eArea">Area</label>
+            <select id="eArea">
+              <option>Any</option><option>Maninagar</option><option>Vatva</option><option>Isanpur</option><option>Ghodasar</option><option>Narol</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="eBudget">Monthly budget (Rs)</label>
+            <input id="eBudget" inputmode="numeric" placeholder="e.g. 10000">
+          </div>
+          <div class="field full">
+            <label for="eMsg">Message</label>
+            <textarea id="eMsg" placeholder="Move-in date, parking, furnishing, anything else"></textarea>
+          </div>
+          <div class="field full">
+            <button class="btn-fill wide" type="submit">Send enquiry on WhatsApp</button>
+            <p class="form-note" id="enqStatus" role="status"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h3>AASHRAY PROPERTIES</h3>
+        <p>Rental flats, houses, bungalows and shops in Maninagar, Vatva, Isanpur, Ghodasar and Narol, Ahmedabad.</p>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <p><a data-wa href="#">WhatsApp</a></p>
+        <p data-phone style="margin-top:4px"></p>
+      </div>
+      <div>
+        <h3>Quick links</h3>
+        <p><a href="properties.html">All rentals</a></p>
+        <p><a href="#visit">Book a visit</a></p>
+        <p><a href="#reviews">Reviews</a></p>
+        <p><a href="#contact">Contact</a></p>
+      </div>
+    </div>
+    <p class="fine">Rents and availability change often. Confirm details with us before you visit or pay anything. Registration details will be shown here once available.</p>
+    <p class="fine">&copy; <span data-year></span> Aashray Properties</p>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script>
+  initHome();
+</script>
+</body>
+</html>
