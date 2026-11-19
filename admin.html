@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AASHRAY | Admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #243247;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid #dce5ef;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-size: 21px; font-weight: 700; color: #183b63; }
+    .brand span { display: block; font-size: 11px; letter-spacing: 3px; color: #71849a; margin-top: 4px; }
+    main { max-width: 1000px; margin: 40px auto; padding: 0 18px; }
+    .panel {
+      background: white;
+      border: 1px solid #dce5ef;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 4px 18px #193b6310;
+    }
+    .login { max-width: 420px; margin: 65px auto; }
+    h1 { margin-top: 0; font-size: 25px; }
+    p { color: #718096; line-height: 1.5; }
+    label { display: block; margin: 20px 0 8px; font-weight: 600; }
+    input {
+      width: 100%; padding: 13px; border: 1px solid #cbd5e1;
+      border-radius: 7px; font-size: 16px;
+    }
+    button {
+      border: 0; border-radius: 7px; padding: 12px 18px;
+      background: #245b91; color: white; font-size: 15px;
+      cursor: pointer; margin-top: 18px;
+    }
+    button:hover { background: #194675; }
+    button.secondary { background: #e8eff7; color: #24486c; }
+    .full { width: 100%; }
+    .message { margin-top: 14px; font-size: 14px; color: #b42318; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(190px,1fr)); gap: 16px; margin: 24px 0; }
+    .stat { background: #f5f9fd; border: 1px solid #dce5ef; border-radius: 10px; padding: 20px; }
+    .stat strong { display: block; font-size: 27px; color: #245b91; margin-top: 8px; }
+    .notice { background: #f0f6fc; border-left: 4px solid #5689b8; padding: 15px; border-radius: 5px; }
+    .hidden { display: none; }
+    @media(max-width:600px) {
+      main { margin: 22px auto; }
+      .panel { padding: 21px; }
+      header { padding: 15px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">AASHRAY <span>PROPERTIES · ADMIN</span></div>
+    <button id="logoutBtn" class="secondary hidden" onclick="logout()">Log out</button>
+  </header>
+
+  <main>
+    <section id="loginPanel" class="panel login">
+      <h1>Admin Login</h1>
+      <p>Sign in to manage AASHRAY property listings.</p>
+      <form id="loginForm">
+        <label for="password">Admin password</label>
+        <input id="password" type="password" placeholder="Enter your admin password" required>
+        <button class="full" type="submit">Sign in</button>
+      </form>
+      <div id="loginMessage" class="message"></div>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div class="panel">
+        <h1>Welcome to AASHRAY</h1>
+        <p>Your property management dashboard.</p>
+        <div class="cards">
+          <div class="stat">Total properties<strong>—</strong></div>
+          <div class="stat">Available<strong>—</strong></div>
+          <div class="stat">Rented<strong>—</strong></div>
+        </div>
+        <div class="notice">
+          <strong>Dashboard setup in progress</strong>
+          <p>Login is connected. Next we'll connect the property database so you can add, edit, and manage listings here.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const API = "https://aashray-api.xen-sam08.workers.dev";
+
+    const loginPanel = document.getElementById("loginPanel");
+    const dashboard = document.getElementById("dashboard");
+    const loginMessage = document.getElementById("loginMessage");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    function showDashboard() {
+      loginPanel.classList.add("hidden");
+      dashboard.classList.remove("hidden");
+      logoutBtn.classList.remove("hidden");
+    }
+
+    function showLogin() {
+      dashboard.classList.add("hidden");
+      loginPanel.classList.remove("hidden");
+      logoutBtn.classList.add("hidden");
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      loginMessage.textContent = "Signing in...";
+
+      const password = document.getElementById("password").value;
+
+      try {
+        const result = await fetch(API + "/api/login", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password })
+        });
+
+        const data = await result.json();
+
+        if (!result.ok || !data.success) {
+          throw new Error(data.message || "Login failed");
+        }
+
+        document.getElementById("password").value = "";
+        showDashboard();
+      } catch (error) {
+        loginMessage.textContent = error.message;
+      }
+    });
+
+    async function logout() {
+      try {
+        await fetch(API + "/api/logout", {
+          method: "POST",
+          credentials: "include"
+        });
+      } finally {
+        showLogin();
+        loginMessage.textContent = "You have logged out.";
+      }
+    }
+
+    async function checkSession() {
+      try {
+        const result = await fetch(API + "/api/session", {
+          credentials: "include"
+        });
+        const data = await result.json();
+
+        if (data.authenticated) showDashboard();
+      } catch (error) {
+        console.log("Session check failed:", error);
+      }
+    }
+
+    checkSession();
+  </script>
+</body>
+</html>
