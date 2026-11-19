@@ -87,10 +87,59 @@
         <div class="stat">Available<strong id="availableCount">0</strong></div>
 <div class="stat">Rented<strong id="rentedCount">0</strong></div>
         </div>
-        <div class="notice">
-          <strong>Dashboard setup in progress</strong>
-          <p>Login is connected. Next we'll connect the property database so you can add, edit, and manage listings here.</p>
-        </div>
+        
+<div class="panel" style="margin-top:24px;">
+  <h2>Add New Property</h2>
+  <form id="propertyForm">
+    <label for="propertyArea">Area</label>
+    <input id="propertyArea" required placeholder="e.g. Maninagar">
+
+    <label for="propertyType">Property type</label>
+    <select id="propertyType" required>
+      <option value="">Select type</option>
+      <option>Flat</option>
+      <option>House</option>
+      <option>Villa</option>
+      <option>Shop</option>
+      <option>Office</option>
+      <option>Commercial</option>
+      <option>Plot</option>
+    </select>
+
+    <label for="propertyBhk">BHK</label>
+    <input id="propertyBhk" placeholder="e.g. 2 BHK">
+
+    <label for="propertyPrice">Monthly rent (₹)</label>
+    <input id="propertyPrice" type="number" min="0" required placeholder="e.g. 12000">
+
+    <label for="propertyDeposit">Deposit (₹)</label>
+    <input id="propertyDeposit" type="number" min="0" placeholder="e.g. 24000">
+
+    <label for="propertySize">Size (sq. ft.)</label>
+    <input id="propertySize" type="number" min="0" placeholder="e.g. 900">
+
+    <label for="propertyFurnishing">Furnishing</label>
+    <select id="propertyFurnishing">
+      <option value="">Select furnishing</option>
+      <option>Unfurnished</option>
+      <option>Semi-furnished</option>
+      <option>Fully furnished</option>
+    </select>
+
+    <label for="propertyStatus">Status</label>
+    <select id="propertyStatus" required>
+      <option value="available">Available</option>
+      <option value="rented">Rented</option>
+    </select>
+
+    <label for="propertyNotes">Description / Notes</label>
+    <textarea id="propertyNotes" rows="4" placeholder="Describe the property..."></textarea>
+
+    <button type="submit">Save Property</button>
+  </form>
+  <div id="propertyMessage" class="message"></div>
+</div>
+
       </div>
     </section>
   </main>
@@ -152,6 +201,61 @@
         showLogin();
         loginMessage.textContent = "You have logged out.";
       }
+async function saveProperty(event) {
+  event.preventDefault();
+
+  const message = document.getElementById("propertyMessage");
+  const button = document.querySelector("#propertyForm button[type='submit']");
+
+  message.textContent = "Saving property...";
+  button.disabled = true;
+
+  const property = {
+    id: "AASH-" + Date.now(),
+    area: document.getElementById("propertyArea").value.trim(),
+    type: document.getElementById("propertyType").value,
+    kind: "Rent",
+    bhk: document.getElementById("propertyBhk").value.trim(),
+    price: document.getElementById("propertyPrice").value,
+    deposit: document.getElementById("propertyDeposit").value,
+    size_sqft: document.getElementById("propertySize").value,
+    furnishing: document.getElementById("propertyFurnishing").value,
+    available: "Yes",
+    status: document.getElementById("propertyStatus").value,
+    featured: "No",
+    notes: document.getElementById("propertyNotes").value.trim(),
+    whatsapp: "917359033540"
+  };
+
+  try {
+    const result = await fetch(API + "/api/properties", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "save",
+        property
+      })
+    });
+
+    const data = await result.json();
+
+    if (!result.ok || !data.success) {
+      throw new Error(data.message || "Could not save property");
+    }
+
+    document.getElementById("propertyForm").reset();
+    message.textContent = "Property saved successfully!";
+    await loadProperties();
+
+  } catch (error) {
+    message.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+}
+      document.getElementById("propertyForm").addEventListener("submit", saveProperty);
+
       async function loadProperties() {
   try {
     const result = await fetch(API + "/api/properties", {
