@@ -152,6 +152,36 @@
         showLogin();
         loginMessage.textContent = "You have logged out.";
       }
+      async function loadProperties() {
+  try {
+    const result = await fetch(API + "/api/properties", {
+      credentials: "include"
+    });
+
+    const data = await result.json();
+
+    if (!result.ok || !data.success) {
+      throw new Error(data.message || "Could not load properties");
+    }
+
+    const properties = data.properties || [];
+
+    const total = properties.length;
+    const available = properties.filter(p =>
+      String(p.status || "").toLowerCase() === "available"
+    ).length;
+    const rented = properties.filter(p =>
+      String(p.status || "").toLowerCase() === "rented"
+    ).length;
+
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("availableCount").textContent = available;
+    document.getElementById("rentedCount").textContent = rented;
+
+  } catch (error) {
+    console.error("AASHRAY property loading error:", error);
+  }
+}
     }
 
     async function checkSession() {
@@ -161,7 +191,10 @@
         });
         const data = await result.json();
 
-        if (data.authenticated) showDashboard();
+        if (data.authenticated) {
+  showDashboard();
+  await loadProperties();
+}
       } catch (error) {
         console.log("Session check failed:", error);
       }
