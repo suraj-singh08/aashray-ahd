@@ -67,18 +67,33 @@ const KNOWN = new Set(["id","area","type","kind","bhk","price","deposit","size_s
 const SAMPLE_MODE = { on: false };
 
 async function loadListings() {
-  if (!CONFIG.SHEET_CSV_URL) { SAMPLE_MODE.on = true; return SAMPLE; }
   try {
-    const res = await fetch(CONFIG.SHEET_CSV_URL, { cache: "no-store" });
+    const res = await fetch(
+      "https://aashray-api.xen-sam08.workers.dev/api/public/properties",
+      { cache: "no-store" }
+    );
+
     if (!res.ok) throw new Error(res.status);
-    const rows = parseCSV(await res.text());
-    return rows.filter(r => (r.status || "").toLowerCase() === "active" && (r.kind || "Rent").toLowerCase() === "rent");
+
+    const data = await res.json();
+
+    if (!data.success || !Array.isArray(data.properties)) {
+      throw new Error("Invalid properties response");
+    }
+
+    SAMPLE_MODE.on = false;
+
+    return data.properties.filter(p =>
+      (p.status || "").toLowerCase() === "active" &&
+      (p.kind || "").toLowerCase() === "rent"
+    );
+
   } catch (e) {
+    console.error("Could not load live properties:", e);
     SAMPLE_MODE.on = true;
     return SAMPLE;
   }
 }
-
 function normalise(r) {
   const bhkRaw = String(r.bhk || "").trim();
   const bhkNum = num(bhkRaw);
