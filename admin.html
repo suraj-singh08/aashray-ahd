@@ -135,7 +135,8 @@ async function deleteProperty(encodedId){
 async function saveProperty(event){
  event.preventDefault();const message=$("propertyMessage");const button=$("saveButton");message.classList.remove("error");message.textContent=editingId?"Updating property...":"Saving property...";button.disabled=true;
  const status=$("propertyStatus").value;
- const existing=editingId?properties.find(p=>String(p.id)===editingId)||{}:{};\n const property={...existing,id:editingId||("AASH-"+Date.now()),area:$("propertyArea").value.trim(),type:$("propertyType").value,kind:"Rent",bhk:$("propertyBhk").value.trim(),price:$("propertyPrice").value,deposit:$("propertyDeposit").value,size_sqft:$("propertySize").value,furnishing:$("propertyFurnishing").value,available:status==="available"?"Yes":"No",status,featured:"No",notes:$("propertyNotes").value.trim(),whatsapp:"917359033540"};
+ const existing=editingId?properties.find(p=>String(p.id)===editingId)||{}:{};
+ const property={...existing,id:editingId||("AASH-"+Date.now()),area:$("propertyArea").value.trim(),type:$("propertyType").value,kind:"Rent",bhk:$("propertyBhk").value.trim(),price:$("propertyPrice").value,deposit:$("propertyDeposit").value,size_sqft:$("propertySize").value,furnishing:$("propertyFurnishing").value,available:status==="available"?"Yes":"No",status,featured:"No",notes:$("propertyNotes").value.trim(),whatsapp:"917359033540"};
  try{
   await uploadSelectedMedia(property);
   const action=editingId?"update":"save";
