@@ -63,7 +63,7 @@ function parseCSV(text) {
 }
 
 /* ---------- data ---------- */
-const KNOWN = new Set(["id","area","type","kind","bhk","price","deposit","size_sqft","furnishing","available","status","featured", ...Array.from({length:20},(_,i)=>"photo_"+(i+1)), "notes","whatsapp","features"]);
+const KNOWN = new Set(["id","area","type","kind","bhk","price","deposit","size_sqft","furnishing","available","status","featured", ...Array.from({length:20},(_,i)=>"photo_"+(i+1)), ...Array.from({length:3},(_,i)=>"video_"+(i+1)), "notes","whatsapp","features"]);
 const SAMPLE_MODE = { on: false };
 
 async function loadListings() {
@@ -114,6 +114,7 @@ function normalise(r) {
     features: String(r.features || "").split(",").map(s => s.trim()).filter(Boolean),
     extras,
     photos: Array.from({length:20},(_,i)=>r["photo_"+(i+1)]).filter(Boolean),
+    videos: Array.from({length:3},(_,i)=>r["video_"+(i+1)]).filter(Boolean),
     photo: r.photo_1 || "",
     wa: digits(r.whatsapp) || CONFIG.WHATSAPP_NUMBER
   };
@@ -124,6 +125,10 @@ const photoHtml = (l, alt) => {
   if (!photos.length) return `<span>Photo coming soon</span>`;
   return `<div class="photo-gallery">${photos.map((url,i)=>`<img src="${esc(url)}" alt="${esc((alt || "Photo of " + l.area + " rental") + " " + (i+1))}" loading="lazy">`).join("")}</div>`;
 };
+
+const videoHtml = l => (l.videos || []).length
+  ? `<div class="video-gallery">${l.videos.map((url,i)=>`<video controls playsinline preload="metadata" aria-label="Property video ${i+1}"><source src="${esc(url)}"></video>`).join("")}</div>`
+  : "";
 
 const titleOf = l => l.category === "Commercial" ? `Commercial space for rent in ${l.area}`
   : `${l.bhkLabel || "Home"} for rent in ${l.area}`;
@@ -354,7 +359,7 @@ function openDetail(id) {
   if (!l) return;
   $("dlgTitle").textContent = titleOf(l);
   $("dlgNote").textContent = l.notes || "";
-  $("dlgPhoto").innerHTML = photoHtml(l, "Photo of " + l.id);
+  $("dlgPhoto").innerHTML = photoHtml(l, "Photo of " + l.id) + videoHtml(l);
   const facts = [
     ["Reference", l.id],
     ["Rent", money(l.price) + " / month"],
