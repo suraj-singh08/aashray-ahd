@@ -1,303 +1,107 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AASHRAY | Admin</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #243247;
-    }
-    header {
-      background: #fff;
-      border-bottom: 1px solid #dce5ef;
-      padding: 18px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .brand { font-size: 21px; font-weight: 700; color: #183b63; }
-    .brand span { display: block; font-size: 11px; letter-spacing: 3px; color: #71849a; margin-top: 4px; }
-    main { max-width: 1000px; margin: 40px auto; padding: 0 18px; }
-    .panel {
-      background: white;
-      border: 1px solid #dce5ef;
-      border-radius: 12px;
-      padding: 28px;
-      box-shadow: 0 4px 18px #193b6310;
-    }
-    .login { max-width: 420px; margin: 65px auto; }
-    h1 { margin-top: 0; font-size: 25px; }
-    p { color: #718096; line-height: 1.5; }
-    label { display: block; margin: 20px 0 8px; font-weight: 600; }
-    input {
-      width: 100%; padding: 13px; border: 1px solid #cbd5e1;
-      border-radius: 7px; font-size: 16px;
-    }
-    button {
-      border: 0; border-radius: 7px; padding: 12px 18px;
-      background: #245b91; color: white; font-size: 15px;
-      cursor: pointer; margin-top: 18px;
-    }
-    button:hover { background: #194675; }
-    button.secondary { background: #e8eff7; color: #24486c; }
-    .full { width: 100%; }
-    .message { margin-top: 14px; font-size: 14px; color: #b42318; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(190px,1fr)); gap: 16px; margin: 24px 0; }
-    .stat { background: #f5f9fd; border: 1px solid #dce5ef; border-radius: 10px; padding: 20px; }
-    .stat strong { display: block; font-size: 27px; color: #245b91; margin-top: 8px; }
-    .notice { background: #f0f6fc; border-left: 4px solid #5689b8; padding: 15px; border-radius: 5px; }
-    .hidden { display: none; }
-    @media(max-width:600px) {
-      main { margin: 22px auto; }
-      .panel { padding: 21px; }
-      header { padding: 15px 18px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AASHRAY | Admin</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#243247}header{background:#fff;border-bottom:1px solid #dce5ef;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}.brand{font-size:21px;font-weight:700;color:#183b63}.brand span{display:block;font-size:11px;letter-spacing:3px;color:#71849a;margin-top:4px}main{max-width:1050px;margin:32px auto;padding:0 18px}.panel{background:#fff;border:1px solid #dce5ef;border-radius:12px;padding:24px;box-shadow:0 4px 18px #193b6310;margin-bottom:22px}.login{max-width:420px;margin:65px auto}h1{margin-top:0;font-size:25px}p{color:#718096;line-height:1.5}label{display:block;margin:16px 0 7px;font-weight:600}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;font-size:15px;background:#fff;color:#243247}button{border:0;border-radius:7px;padding:11px 16px;background:#245b91;color:#fff;font-size:14px;cursor:pointer;margin:8px 6px 0 0}button:hover{background:#194675}button:disabled{opacity:.6;cursor:wait}button.secondary{background:#e8eff7;color:#24486c}button.danger{background:#b42318}.full{width:100%}.message{margin-top:12px;font-size:14px;color:#245b91}.error{color:#b42318}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:22px 0}.stat{background:#f5f9fd;border:1px solid #dce5ef;border-radius:10px;padding:18px}.stat strong{display:block;font-size:27px;color:#245b91;margin-top:8px}.property-list{display:grid;gap:12px}.property{border:1px solid #dce5ef;border-radius:9px;padding:16px;display:flex;justify-content:space-between;gap:16px;align-items:center}.property h3{margin:0 0 7px;color:#183b63}.property p{margin:4px 0}.muted{font-size:13px;color:#718096}.hidden{display:none}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}.form-grid .wide{grid-column:1/-1}.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#e8f4ec;color:#247044;font-size:12px}.pill.rented{background:#fff1e8;color:#9a4b13}@media(max-width:600px){main{margin:20px auto}.panel{padding:18px}header{padding:14px 16px}.property{display:block}.form-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="brand">AASHRAY <span>PROPERTIES · ADMIN</span></div>
-    <button id="logoutBtn" class="secondary hidden" onclick="logout()">Log out</button>
-  </header>
-
-  <main>
-    <section id="loginPanel" class="panel login">
-      <h1>Admin Login</h1>
-      <p>Sign in to manage AASHRAY property listings.</p>
-      <form id="loginForm">
-        <label for="password">Admin password</label>
-        <input id="password" type="password" placeholder="Enter your admin password" required>
-        <button class="full" type="submit">Sign in</button>
-      </form>
-      <div id="loginMessage" class="message"></div>
-    </section>
-
-    <section id="dashboard" class="hidden">
-      <div class="panel">
-        <h1>Welcome to AASHRAY</h1>
-        <p>Your property management dashboard.</p>
-        <div class="cards">
-          <div class="stat">Total properties<strong id="totalCount">0</strong></div>
-        <div class="stat">Available<strong id="availableCount">0</strong></div>
-<div class="stat">Rented<strong id="rentedCount">0</strong></div>
-        </div>
-        
-<div class="panel" style="margin-top:24px;">
-  <h2>Add New Property</h2>
-  <form id="propertyForm">
-    <label for="propertyArea">Area</label>
-    <input id="propertyArea" required placeholder="e.g. Maninagar">
-
-    <label for="propertyType">Property type</label>
-    <select id="propertyType" required>
-      <option value="">Select type</option>
-      <option>Flat</option>
-      <option>House</option>
-      <option>Villa</option>
-      <option>Shop</option>
-      <option>Office</option>
-      <option>Commercial</option>
-      <option>Plot</option>
-    </select>
-
-    <label for="propertyBhk">BHK</label>
-    <input id="propertyBhk" placeholder="e.g. 2 BHK">
-
-    <label for="propertyPrice">Monthly rent (₹)</label>
-    <input id="propertyPrice" type="number" min="0" required placeholder="e.g. 12000">
-
-    <label for="propertyDeposit">Deposit (₹)</label>
-    <input id="propertyDeposit" type="number" min="0" placeholder="e.g. 24000">
-
-    <label for="propertySize">Size (sq. ft.)</label>
-    <input id="propertySize" type="number" min="0" placeholder="e.g. 900">
-
-    <label for="propertyFurnishing">Furnishing</label>
-    <select id="propertyFurnishing">
-      <option value="">Select furnishing</option>
-      <option>Unfurnished</option>
-      <option>Semi-furnished</option>
-      <option>Fully furnished</option>
-    </select>
-
-    <label for="propertyStatus">Status</label>
-    <select id="propertyStatus" required>
-      <option value="available">Available</option>
-      <option value="rented">Rented</option>
-    </select>
-
-    <label for="propertyNotes">Description / Notes</label>
-    <textarea id="propertyNotes" rows="4" placeholder="Describe the property..."></textarea>
-
-    <button type="submit">Save Property</button>
-  </form>
-  <div id="propertyMessage" class="message"></div>
+<header><div class="brand">AASHRAY <span>PROPERTIES · ADMIN</span></div><button id="logoutBtn" class="secondary hidden" onclick="logout()">Log out</button></header>
+<main>
+<section id="loginPanel" class="panel login">
+<h1>Admin Login</h1><p>Sign in to manage AASHRAY property listings.</p>
+<form id="loginForm"><label for="password">Admin password</label><input id="password" type="password" placeholder="Enter your admin password" required><button class="full" type="submit">Sign in</button></form><div id="loginMessage" class="message error"></div>
+</section>
+<section id="dashboard" class="hidden">
+<div class="panel"><h1>Welcome to AASHRAY</h1><p>Your property management dashboard.</p>
+<div class="cards"><div class="stat">Total properties<strong id="totalCount">0</strong></div><div class="stat">Available<strong id="availableCount">0</strong></div><div class="stat">Rented<strong id="rentedCount">0</strong></div></div>
 </div>
-
-      </div>
-    </section>
-  </main>
-
-  <script>
-      const API = "https://aashray-api.xen-sam08.workers.dev";
-
-  const loginPanel = document.getElementById("loginPanel");
-  const dashboard = document.getElementById("dashboard");
-  const loginMessage = document.getElementById("loginMessage");
-  const logoutBtn = document.getElementById("logoutBtn");
-
-  function showDashboard() {
-    loginPanel.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-    logoutBtn.classList.remove("hidden");
-  }
-
-  function showLogin() {
-    dashboard.classList.add("hidden");
-    loginPanel.classList.remove("hidden");
-    logoutBtn.classList.add("hidden");
-  }
-
-  async function loadProperties() {
-    try {
-      const result = await fetch(API + "/api/properties", {
-        credentials: "include"
-      });
-      const data = await result.json();
-
-      if (!result.ok || !data.success) {
-        throw new Error(data.message || "Could not load properties");
-      }
-
-      const properties = data.properties || [];
-
-      document.getElementById("totalCount").textContent = properties.length;
-      document.getElementById("availableCount").textContent =
-        properties.filter(p => String(p.status || "").toLowerCase() === "available").length;
-      document.getElementById("rentedCount").textContent =
-        properties.filter(p => String(p.status || "").toLowerCase() === "rented").length;
-    } catch (error) {
-      console.error("Property loading error:", error);
-    }
-  }
-
-  async function saveProperty(event) {
-    event.preventDefault();
-
-    const message = document.getElementById("propertyMessage");
-    const button = document.querySelector("#propertyForm button[type='submit']");
-
-    message.textContent = "Saving property...";
-    button.disabled = true;
-
-    const status = document.getElementById("propertyStatus").value;
-
-    const property = {
-      id: "AASH-" + Date.now(),
-      area: document.getElementById("propertyArea").value.trim(),
-      type: document.getElementById("propertyType").value,
-      kind: "Rent",
-      bhk: document.getElementById("propertyBhk").value.trim(),
-      price: document.getElementById("propertyPrice").value,
-      deposit: document.getElementById("propertyDeposit").value,
-      size_sqft: document.getElementById("propertySize").value,
-      furnishing: document.getElementById("propertyFurnishing").value,
-      available: status === "available" ? "Yes" : "No",
-      status,
-      featured: "No",
-      notes: document.getElementById("propertyNotes").value.trim(),
-      whatsapp: "917359033540"
-    };
-
-    try {
-      const result = await fetch(API + "/api/properties", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "save", property })
-      });
-
-      const data = await result.json();
-
-      if (!result.ok || !data.success) {
-        throw new Error(data.message || "Could not save property");
-      }
-
-      document.getElementById("propertyForm").reset();
-      message.textContent = "Property saved successfully!";
-      await loadProperties();
-    } catch (error) {
-      message.textContent = error.message;
-    } finally {
-      button.disabled = false;
-    }
-  }
-
-  document.getElementById("propertyForm").addEventListener("submit", saveProperty);
-
-  document.getElementById("loginForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    loginMessage.textContent = "Signing in...";
-
-    const password = document.getElementById("password").value;
-
-    try {
-      const result = await fetch(API + "/api/login", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password })
-      });
-
-      const data = await result.json();
-
-      if (!result.ok || !data.success) {
-        throw new Error(data.message || "Login failed");
-      }
-
-      document.getElementById("password").value = "";
-      showDashboard();
-      await loadProperties();
-    } catch (error) {
-      loginMessage.textContent = error.message;
-    }
-  });
-
-  async function logout() {
-    try {
-      await fetch(API + "/api/logout", {
-        method: "POST",
-        credentials: "include"
-      });
-    } finally {
-      showLogin();
-      loginMessage.textContent = "You have logged out.";
-    }
-  }
-
-  async function checkSession() {
-    try {
-      const result = await fetch(API + "/api/session", {
-        credentials: "include"
-      });
-      const data = await result.json();
-
-      if (data.authenticated) {
-        showDashboard();
-        await loadProperties();
-      }
-    } catch (error) {
-      console.error("Session check failed:", error);
-    }
-  }
-
-  checkSession();
+<div class="panel" id="formPanel"><h2 id="formTitle">Add New Property</h2>
+<form id="propertyForm"><div class="form-grid">
+<div><label for="propertyArea">Area</label><input id="propertyArea" required placeholder="e.g. Maninagar"></div>
+<div><label for="propertyType">Property type</label><select id="propertyType" required><option value="">Select type</option><option>Flat</option><option>House</option><option>Villa</option><option>Shop</option><option>Office</option><option>Commercial</option><option>Plot</option></select></div>
+<div><label for="propertyBhk">BHK</label><input id="propertyBhk" placeholder="e.g. 2 BHK"></div>
+<div><label for="propertyPrice">Monthly rent (₹)</label><input id="propertyPrice" type="number" min="0" required placeholder="e.g. 12000"></div>
+<div><label for="propertyDeposit">Deposit (₹)</label><input id="propertyDeposit" type="number" min="0" placeholder="e.g. 24000"></div>
+<div><label for="propertySize">Size (sq. ft.)</label><input id="propertySize" type="number" min="0" placeholder="e.g. 900"></div>
+<div><label for="propertyFurnishing">Furnishing</label><select id="propertyFurnishing"><option value="">Select furnishing</option><option>Unfurnished</option><option>Semi-furnished</option><option>Fully furnished</option></select></div>
+<div><label for="propertyStatus">Status</label><select id="propertyStatus" required><option value="available">Available</option><option value="rented">Rented</option></select></div>
+<div class="wide"><label for="propertyNotes">Description / Notes</label><textarea id="propertyNotes" rows="4" placeholder="Describe the property..."></textarea></div>
+</div><button id="saveButton" type="submit">Save Property</button><button id="cancelEdit" class="secondary hidden" type="button" onclick="resetForm()">Cancel edit</button></form><div id="propertyMessage" class="message"></div>
+</div>
+<div class="panel"><div class="section-head"><h2>Manage Properties</h2><button class="secondary" onclick="loadProperties()">Refresh</button></div><div id="propertyList" class="property-list"><p>Loading properties...</p></div></div>
+</section>
+</main>
+<script>
+const API="https://aashray-api.xen-sam08.workers.dev";
+let properties=[];
+let editingId=null;
+const $=id=>document.getElementById(id);
+function showDashboard(){$("loginPanel").classList.add("hidden");$("dashboard").classList.remove("hidden");$("logoutBtn").classList.remove("hidden")}
+function showLogin(){$("dashboard").classList.add("hidden");$("loginPanel").classList.remove("hidden");$("logoutBtn").classList.add("hidden")}
+function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function loadProperties(){
+ const list=$("propertyList");list.innerHTML="<p>Loading properties...</p>";
+ try{
+  const response=await fetch(API+"/api/properties",{credentials:"include"});const data=await response.json();
+  if(!response.ok||!data.success)throw new Error(data.message||"Could not load properties");
+  properties=data.properties||[];
+  $("totalCount").textContent=properties.length;
+  $("availableCount").textContent=properties.filter(p=>String(p.status||"").toLowerCase()==="available").length;
+  $("rentedCount").textContent=properties.filter(p=>String(p.status||"").toLowerCase()==="rented").length;
+  renderProperties();
+ }catch(error){list.innerHTML='<p class="error">'+escapeHtml(error.message)+'</p>'}
+}
+function renderProperties(){
+ const list=$("propertyList");
+ if(!properties.length){list.innerHTML="<p>No properties found yet. Add your first listing above.</p>";return}
+ list.innerHTML=properties.map(p=>{
+  const status=String(p.status||"").toLowerCase();
+  return '<article class="property"><div><h3>'+escapeHtml(p.area||"Area not set")+' · '+escapeHtml(p.type||"Property")+'</h3><p>'+escapeHtml(p.bhk||"")+' &nbsp; ₹'+escapeHtml(p.price||"0")+'/month</p><p class="muted">ID: '+escapeHtml(p.id)+' · '+escapeHtml(p.furnishing||"Furnishing not set")+' · '+escapeHtml(p.size_sqft||"—")+' sq. ft.</p><span class="pill '+(status==="rented"?"rented":"")+'">'+escapeHtml(p.status||"Unknown")+'</span></div><div><button type="button" onclick="editProperty(\''+encodeURIComponent(String(p.id||""))+'\')">Edit</button><button type="button" class="danger" onclick="deleteProperty(\''+encodeURIComponent(String(p.id||""))+'\')">Delete</button></div></article>';
+ }).join("");
+}
+function resetForm(){
+ editingId=null;$("propertyForm").reset();$("formTitle").textContent="Add New Property";$("saveButton").textContent="Save Property";$("cancelEdit").classList.add("hidden");$("propertyMessage").textContent="";
+}
+function editProperty(encodedId){
+ const id=decodeURIComponent(encodedId);const p=properties.find(item=>String(item.id)===id);if(!p)return;
+ editingId=id;$("propertyArea").value=p.area||"";$("propertyType").value=p.type||"";$("propertyBhk").value=p.bhk||"";$("propertyPrice").value=p.price||"";$("propertyDeposit").value=p.deposit||"";$("propertySize").value=p.size_sqft||"";$("propertyFurnishing").value=p.furnishing||"";$("propertyStatus").value=String(p.status||"available").toLowerCase();$("propertyNotes").value=p.notes||"";
+ $("formTitle").textContent="Edit Property";$("saveButton").textContent="Update Property";$("cancelEdit").classList.remove("hidden");$("propertyMessage").textContent="Editing "+id;
+ $("formPanel").scrollIntoView({behavior:"smooth",block:"start"});
+}
+async function deleteProperty(encodedId){
+ const id=decodeURIComponent(encodedId);const p=properties.find(item=>String(item.id)===id);if(!p)return;
+ if(!confirm("Delete the property "+id+"? This cannot be undone."))return;
+ try{
+  const response=await fetch(API+"/api/properties",{method:"POST",credentials:"include",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"delete",id})});
+  const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||"Could not delete property");
+  $("propertyMessage").textContent="Property deleted.";await loadProperties();
+ }catch(error){$("propertyMessage").textContent=error.message;$("propertyMessage").classList.add("error")}
+}
+async function saveProperty(event){
+ event.preventDefault();const message=$("propertyMessage");const button=$("saveButton");message.classList.remove("error");message.textContent=editingId?"Updating property...":"Saving property...";button.disabled=true;
+ const status=$("propertyStatus").value;
+ const property={id:editingId||("AASH-"+Date.now()),area:$("propertyArea").value.trim(),type:$("propertyType").value,kind:"Rent",bhk:$("propertyBhk").value.trim(),price:$("propertyPrice").value,deposit:$("propertyDeposit").value,size_sqft:$("propertySize").value,furnishing:$("propertyFurnishing").value,available:status==="available"?"Yes":"No",status,featured:"No",notes:$("propertyNotes").value.trim(),whatsapp:"917359033540"};
+ try{
+  const action=editingId?"update":"save";
+  const response=await fetch(API+"/api/properties",{method:"POST",credentials:"include",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,property})});
+  const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||"Could not save property");
+  resetForm();message.textContent=editingId?"Property updated successfully!":"Property saved successfully!";await loadProperties();
+ }catch(error){message.textContent=error.message;message.classList.add("error")}
+ finally{button.disabled=false}
+}
+$("propertyForm").addEventListener("submit",saveProperty);
+$("loginForm").addEventListener("submit",async event=>{
+ event.preventDefault();$("loginMessage").textContent="Signing in...";
+ try{const response=await fetch(API+"/api/login",{method:"POST",credentials:"include",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:$("password").value})});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||"Login failed");$("password").value="";showDashboard();await loadProperties()}
+ catch(error){$("loginMessage").textContent=error.message}
+});
+async function logout(){try{await fetch(API+"/api/logout",{method:"POST",credentials:"include"})}finally{showLogin();$("loginMessage").textContent="You have logged out."}}
+async function checkSession(){try{const response=await fetch(API+"/api/session",{credentials:"include"});const data=await response.json();if(data.authenticated){showDashboard();await loadProperties()}}catch(error){console.error("Session check failed:",error)}}
+checkSession();
 </script>
 </body>
 </html>
