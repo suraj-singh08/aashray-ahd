@@ -122,13 +122,25 @@ function normalise(r) {
 
 const photoHtml = (l, alt) => {
   const photos = l.photos?.length ? l.photos : (l.photo ? [l.photo] : []);
-  if (!photos.length) return `<span>Photo coming soon</span>`;
-  return `<div class="photo-gallery">${photos.map((url,i)=>`<img src="${esc(url)}" alt="${esc((alt || "Photo of " + l.area + " rental") + " " + (i+1))}" loading="lazy">`).join("")}</div>`;
+  const slides = [
+    ...photos.map((url,i)=>`<div class="media-slide"><img src="${esc(url)}" alt="${esc((alt || "Photo of " + l.area + " rental") + " " + (i+1))}" loading="lazy"></div>`),
+    ...(l.videos || []).map((url,i)=>`<div class="media-slide"><video controls muted playsinline preload="metadata" aria-label="Property video ${i+1}"><source src="${esc(url)}"></video></div>`)
+  ];
+  if (!slides.length) return `<span>Photo coming soon</span>`;
+  return `<div class="media-carousel">${slides.join("")}</div>`;
 };
 
-const videoHtml = l => (l.videos || []).length
-  ? `<div class="video-gallery">${l.videos.map((url,i)=>`<video controls playsinline preload="metadata" aria-label="Property video ${i+1}"><source src="${esc(url)}"></video>`).join("")}</div>`
-  : "";
+function setupMediaAutoplay(root = document) {
+  if (!("IntersectionObserver" in window)) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.7) video.play().catch(() => {});
+      else { video.pause(); video.currentTime = 0; }
+    });
+  }, { threshold: [0, 0.7, 1] });
+  root.querySelectorAll(".media-carousel video").forEach(video => observer.observe(video));
+};
 
 const titleOf = l => l.category === "Commercial" ? `Commercial space for rent in ${l.area}`
   : `${l.bhkLabel || "Home"} for rent in ${l.area}`;
@@ -274,6 +286,7 @@ async function initHome() {
   $("featuredGrid").innerHTML = pick.length
     ? pick.map(l => rentCard(l, `properties.html#${encodeURIComponent(l.id)}`)).join("")
     : `<p class="muted">New rentals are being added. Message us on WhatsApp to see what's available.</p>`;
+  setupMediaAutoplay($("featuredGrid"));
   $("featuredCount").textContent = rows.length;
 }
 
@@ -350,6 +363,7 @@ function render() {
   if (!state.applied) return;
   const rows = sortRows(ROWS.filter(matches));
   $("grid").innerHTML = rows.map(l => rentCard(l, `#${encodeURIComponent(l.id)}`)).join("");
+  setupMediaAutoplay($("grid"));
   $("count").textContent = rows.length + (rows.length === 1 ? " rental" : " rentals");
   $("empty").hidden = rows.length !== 0;
 }
@@ -359,7 +373,8 @@ function openDetail(id) {
   if (!l) return;
   $("dlgTitle").textContent = titleOf(l);
   $("dlgNote").textContent = l.notes || "";
-  $("dlgPhoto").innerHTML = photoHtml(l, "Photo of " + l.id) + videoHtml(l);
+  $("dlgPhoto").innerHTML = photoHtml(l, "Photo of " + l.id);
+  setupMediaAutoplay($("dlgPhoto"));
   const facts = [
     ["Reference", l.id],
     ["Rent", money(l.price) + " / month"],
