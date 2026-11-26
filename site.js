@@ -63,7 +63,7 @@ function parseCSV(text) {
 }
 
 /* ---------- data ---------- */
-const KNOWN = new Set(["id","area","type","kind","bhk","price","deposit","size_sqft","furnishing","available","status","featured","photo_1","photo_2","photo_3","notes","whatsapp","features"]);
+const KNOWN = new Set(["id","area","type","kind","bhk","price","deposit","size_sqft","furnishing","available","status","featured", ...Array.from({length:20},(_,i)=>"photo_"+(i+1)), "notes","whatsapp","features"]);
 const SAMPLE_MODE = { on: false };
 
 async function loadListings() {
@@ -113,14 +113,17 @@ function normalise(r) {
     featured: /^(yes|true|1)$/i.test(String(r.featured || "").trim()),
     features: String(r.features || "").split(",").map(s => s.trim()).filter(Boolean),
     extras,
+    photos: Array.from({length:20},(_,i)=>r["photo_"+(i+1)]).filter(Boolean),
     photo: r.photo_1 || "",
     wa: digits(r.whatsapp) || CONFIG.WHATSAPP_NUMBER
   };
 }
 
-const photoHtml = (l, alt) => l.photo
-  ? `<img src="${esc(l.photo)}" alt="${esc(alt || "Photo of " + l.area + " rental")}" loading="lazy">`
-  : `<span>Photo coming soon</span>`;
+const photoHtml = (l, alt) => {
+  const photos = l.photos?.length ? l.photos : (l.photo ? [l.photo] : []);
+  if (!photos.length) return `<span>Photo coming soon</span>`;
+  return `<div class="photo-gallery">${photos.map((url,i)=>`<img src="${esc(url)}" alt="${esc((alt || "Photo of " + l.area + " rental") + " " + (i+1))}" loading="lazy">`).join("")}</div>`;
+};
 
 const titleOf = l => l.category === "Commercial" ? `Commercial space for rent in ${l.area}`
   : `${l.bhkLabel || "Home"} for rent in ${l.area}`;
